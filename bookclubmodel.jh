@@ -1,0 +1,64 @@
+entity Author {
+	id String,
+	name String
+}
+
+entity Book {
+	id String,
+	title String,
+    author Author 
+}
+
+relationship ManyToOne {
+	Book{author} to Author
+}
+
+entity BookClub {
+	id String,
+	name String,
+    mainTheme String,
+    admin User,
+    participantList User
+}
+
+relationship OneToOne {
+	BookClub{admin} to User
+}
+
+relationship OneToMany {
+	BookClub{participantList} to User
+}
+
+entity Meeting {
+	id String,
+	theme String,
+    meetingsDateTime LocalDateTime,
+    descriprion String,
+    bookList Book,
+    bookClub BookClub,
+    address String,
+    longitude Double,
+    latitude Double,
+    admin User,
+    participantList User
+}
+
+relationship OneToOne {
+	Meeting{bookClub} to BookClub
+}
+
+relationship OneToOne {
+	Meeting{admin} to User
+}
+
+relationship OneToMany {
+    Meeting{bookList} to Book,
+    Meeting{participantList} to User
+}
+
+// Set pagination options
+paginate BookClub, Meeting with pagination
+
+// Set service options to all except few
+service all with serviceImpl 
+
